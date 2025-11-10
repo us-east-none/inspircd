@@ -14,7 +14,7 @@ elif [ ! -w $INSPIRCD_ROOT/conf/ ]; then
         ###                            ###
         ###   Can't write to volume!   ###
         ###    Please change owner     ###
-        ###        to uid 10000        ###
+        ###        to uid 1000         ###
         ###                            ###
         ##################################
     "
