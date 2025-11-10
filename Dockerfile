@@ -14,8 +14,8 @@ RUN apk add --no-cache gcc g++ make git pkgconfig perl \
        perl-net-ssleay perl-crypt-ssleay perl-lwp-protocol-https \
        perl-libwww wget gnutls-dev $BUILD_DEPENDENCIES
 
-RUN addgroup -g 10000 -S inspircd
-RUN adduser -u 10000 -h /inspircd/ -D -S -G inspircd inspircd
+RUN addgroup -g 1000 -S inspircd
+RUN adduser -u 1000 -h /inspircd/ -D -S -G inspircd inspircd
 
 RUN git clone --branch $VERSION https://github.com/inspircd/inspircd.git inspircd-src
 
@@ -26,7 +26,7 @@ RUN git checkout $(git describe --abbrev=0 --tags $VERSION)
 RUN { [ $(ls /src/modules/ | wc -l) -gt 0 ] && cp -r /src/modules/* /inspircd-src/src/modules/ || echo "No modules overwritten/added by repository"; }
 RUN echo $EXTRASMODULES | xargs --no-run-if-empty ./modulemanager install
 
-RUN ./configure --prefix /inspircd --example-dir /inspircd/examples --uid 10000 --gid 10000
+RUN ./configure --prefix /inspircd --example-dir /inspircd/examples --uid 1000 --gid 1000
 RUN echo $CONFIGUREARGS | xargs --no-run-if-empty ./configure
 RUN make -j`getconf _NPROCESSORS_ONLN` install
 
@@ -39,8 +39,8 @@ FROM alpine:3.22
 ARG RUN_DEPENDENCIES=
 
 RUN apk add --no-cache libgcc libstdc++ gnutls gnutls-utils $RUN_DEPENDENCIES && \
-    addgroup -g 10000 -S inspircd && \
-    adduser -u 10000 -h /inspircd/ -D -S -G inspircd inspircd
+    addgroup -g 1000 -S inspircd && \
+    adduser -u 1000 -h /inspircd/ -D -S -G inspircd inspircd
 
 COPY --chown=inspircd:inspircd conf/ /conf/
 COPY --chown=inspircd:inspircd entrypoint.sh /entrypoint.sh
